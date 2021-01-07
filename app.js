@@ -31,10 +31,6 @@ function clickEventHandler(event) {
   checkForOutcomes(event.target);
 }
 
-function numWinsHandler(winner) {
-
-}
-
 function appendPlayItem(cell) {
   // if the given cell already has an appended item
   if (cell.children.length || cell.innerText.length) {
@@ -63,15 +59,14 @@ function appendPlayItem(cell) {
 }
 
 function checkForOutcomes(cell) {
-
   let row1 = allCellValues.slice(0, 3);
   let row2 = allCellValues.slice(3, 6);
   let row3 = allCellValues.slice(6);
-  let col1 = []
-  , col2 = []
-  , col3 = []
-  , diag1 = []
-  , diag2 = [];
+  let col1 = [];
+  let col2 = [];
+  let col3 = [];
+  let diag1 = [];
+  let diag2 = [];
 
   col1.push(allCellValues[0], allCellValues[3], allCellValues[6]);
   col2.push(allCellValues[1], allCellValues[4], allCellValues[7]);
@@ -101,16 +96,12 @@ function checkForOutcomes(cell) {
 }
 
 function resetGameBoard() {
-  // for each cell in the table
   allCells.forEach((cell) => {
-    // if cell has a child
     if (cell.children.length) {
-      // reset the cell
       cell.innerHTML = '';
     }
   });
 
-  // start the game back up
   startGame();
 }
 
@@ -154,8 +145,6 @@ const startGame = () => {
 (() => {
   playerOneName = prompt(`What is player one's (CPU) name?`) || 'Player One';
   playerTwoName = prompt(`What is player two's name?`) || 'Player Two';
-
-
   playerOneDisplay.innerHTML = playerOneName + `'s Win Total: ` + playerOneWins;
   playerTwoDisplay.innerHTML = playerTwoName + `'s Win Total: ` + playerTwoWins;
 
