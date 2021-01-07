@@ -1,6 +1,8 @@
 // selectors
 const gameBoard = document.getElementById('game-board');
 const resetBtn = document.getElementById('reset');
+const xWins = document.getElementById('x-wins');
+const oWins = document.getElementById('o-wins');
 const c1r1 = document.getElementById('0');
 const c2r1 = document.getElementById('1');
 const c3r1 = document.getElementById('2');
@@ -83,12 +85,14 @@ function checkForOutcomes(cell) {
       playItem = false; // winner starts next round
       numWins_X++;
       resetGameBoard();
+      xWins.innerHTML = 'Player X Win Total: ' + numWins_X;
       return true;
     } else if (result === 3) {
       alert('Winner !! Congrats player O ! B)');
       playItem = true; // winner starts next round
       numWins_O++;
       resetGameBoard();
+      oWins.innerHTML = 'Player O Win Total: ' + numWins_O;
       return true;
     }
   });
