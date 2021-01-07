@@ -15,15 +15,16 @@ const c3r3 = document.getElementById('8');
 // global variables
 let playItem = true;
 let allCells = [c1r1, c2r1, c3r1, c1r2, c2r2, c3r2, c1r3, c2r3, c3r3];
-let allCellValues = [0, 0, 0, 0, 0, 0, 0, 0, 0];
-let totalPlayedItems = 1;
+let allCellValues = [];
+let totalPlayedItems = 0;
 
+
+// helper functions
 function clickEventHandler(event) {
   appendPlayItem(event.target);
   checkForOutcomes(event.target);
 }
 
-// helper functions
 function appendPlayItem(cell) {
   // if the given cell already has an appended item
   if (cell.children.length) {
@@ -45,7 +46,8 @@ function appendPlayItem(cell) {
     playItem = !playItem;
     totalPlayedItems++;
     if (totalPlayedItems === 9) {
-      alert('Woah!! What a close one - press Reset to play again!! B)')
+      alert('Woah!! What a close one ! Better luck next time ! B)')
+      resetGameBoard()
     }
   }
 }
@@ -92,9 +94,7 @@ function resetGameBoard() {
     }
   });
 
-  allCellValues = [0, 0, 0, 0, 0, 0, 0, 0, 0];
-
-  // set the gameboard back up for play
+  // start the game back up
   startGame();
 }
 
@@ -103,11 +103,6 @@ function initializeGameBoard() {
     for(let i = 0; i < gameBoard.rows.length; i++) {
       for (let j = 0; j < gameBoard.rows[i].cells.length; j++) {
         gameBoard.rows[i].cells[j].onclick = clickEventHandler.bind(this);
-        // gameBoard.rows[i].cells[j].onclick = function (event) {
-        //   console.log(this);
-        //   appendPlayItem(this);
-        //   checkForOutcomes(this);
-        // }
       }
     }
   }
@@ -119,15 +114,16 @@ function initializeGameBoard() {
   }
 }
 
-// initialize game board and make the first play
-const startGame = () => {
-  let rand = Math.floor(Math.random() * 9);
-  let firstPlay = document.createElement('h1');
-  firstPlay.append('X');
-  allCells[rand].append(firstPlay)
-  allCellValues[rand] = -1;
-
-};
+  // initialize game board and make the first play
+  const startGame = () => {
+    allCellValues = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+    let rand = Math.floor(Math.random() * 9);
+    let firstPlay = document.createElement('h1');
+    firstPlay.append('X');
+    allCells[rand].append(firstPlay)
+    allCellValues[rand] = -1;
+    totalPlayedItems = 1;
+  };
 
 initializeGameBoard();
 startGame();
