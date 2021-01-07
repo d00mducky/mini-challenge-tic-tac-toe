@@ -14,6 +14,8 @@ const c3r3 = document.getElementById('8');
 
 // global variables
 let playItem = false; // X = false, O = true
+let numWins_X = 0;
+let numWins_O = 0;
 let allCells = [c1r1, c2r1, c3r1, c1r2, c2r2, c3r2, c1r3, c2r3, c3r3];
 let allCellValues = [];
 let totalPlayedItems = 0;
@@ -25,30 +27,33 @@ function clickEventHandler(event) {
   checkForOutcomes(event.target);
 }
 
+function numWinsHandler(winner) {
+
+}
+
 function appendPlayItem(cell) {
   // if the given cell already has an appended item
   if (cell.children.length || cell.innerText.length) {
     // tell user to select a different square or restart
     alert('This square has already been played! Please select an empty square or restart the game ! :)');
   } else { // the user selected an unplayed square
-    let h1 = document.createElement('h1');
-    // h1.onclick = clickEventHandler.bind(this);
-    // if the last play was X - append O, else append X -&&- update cell values
-    if (playItem) {
-      h1.append('0');
-      allCellValues[parseInt(cell.id)] = 1;
-    } else {
-      h1.append('X');
-      allCellValues[parseInt(cell.id)] = -1;
-    }
-
-    cell.append(h1);
-    // set up playItem for the next play
-    playItem = !playItem;
     totalPlayedItems++;
     if (totalPlayedItems === 9) {
       alert('Woah!! What a close one ! Better luck next time ! B)')
       resetGameBoard()
+    } else {
+      let h1 = document.createElement('h1');
+      // if the last play was X - append O, else append X -&&- update cell values
+      if (playItem) {
+        h1.append('0');
+        allCellValues[parseInt(cell.id)] = 1;
+      } else {
+        h1.append('X');
+        allCellValues[parseInt(cell.id)] = -1;
+      }
+
+      playItem = !playItem;
+      cell.append(h1);
     }
   }
 }
@@ -76,11 +81,13 @@ function checkForOutcomes(cell) {
     if (result === -3) {
       alert('Winner !! Congrats player X ! B)');
       playItem = false; // winner starts next round
+      numWins_X++;
       resetGameBoard();
       return true;
     } else if (result === 3) {
       alert('Winner !! Congrats player O ! B)');
       playItem = true; // winner starts next round
+      numWins_O++;
       resetGameBoard();
       return true;
     }
@@ -125,12 +132,13 @@ const startGame = () => {
   if (playItem) {
     firstPlay.append('0');
     allCellValues[rand] = 1;
+    playItem = false;
   } else {
     firstPlay.append('X');
     allCellValues[rand] = -1;
+    playItem = true;
   }
-  // firstPlay.append('X');
-  // allCellValues[rand] = -1;
+
   allCells[rand].append(firstPlay)
   totalPlayedItems = 1;
 };
