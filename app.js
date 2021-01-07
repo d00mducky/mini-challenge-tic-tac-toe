@@ -133,12 +133,6 @@ function initializeGameBoard() {
 // initialize game board and make the first play
 const startGame = () => {
 
-  playerOneName = prompt(`What is player one's (CPU) name?`);
-  playerTwoName = prompt(`What is player two's name?`);
-
-  playerOneDisplay.innerHTML = playerOneName + `'s Win Total: ` + playerOneWins;
-  playerTwoDisplay.innerHTML = playerTwoName + `'s Win Total: ` + playerTwoWins;
-
   allCellValues = [0, 0, 0, 0, 0, 0, 0, 0, 0];
   let rand = Math.floor(Math.random() * 9);
   let firstPlay = document.createElement('h1');
@@ -156,6 +150,16 @@ const startGame = () => {
   totalPlayedItems = 1;
 };
 
-initializeGameBoard();
-startGame();
+// initialize app
+(() => {
+  playerOneName = prompt(`What is player one's (CPU) name?`) || 'Player One';
+  playerTwoName = prompt(`What is player two's name?`) || 'Player Two';
+
+
+  playerOneDisplay.innerHTML = playerOneName + `'s Win Total: ` + playerOneWins;
+  playerTwoDisplay.innerHTML = playerTwoName + `'s Win Total: ` + playerTwoWins;
+
+  initializeGameBoard();
+  startGame();
+})();
 
