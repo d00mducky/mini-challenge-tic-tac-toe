@@ -13,7 +13,7 @@ const c3r3 = document.getElementById('8');
 
 
 // global variables
-let playItem = true;
+let playItem = false; // X = false, O = true
 let allCells = [c1r1, c2r1, c3r1, c1r2, c2r2, c3r2, c1r3, c2r3, c3r3];
 let allCellValues = [];
 let totalPlayedItems = 0;
@@ -29,12 +29,11 @@ function appendPlayItem(cell) {
   // if the given cell already has an appended item
   if (cell.children.length || cell.innerText.length) {
     // tell user to select a different square or restart
-    alert('This square has already been played! Please select an empty square or restart the game ! :)')
+    alert('This square has already been played! Please select an empty square or restart the game ! :)');
   } else { // the user selected an unplayed square
     let h1 = document.createElement('h1');
     // h1.onclick = clickEventHandler.bind(this);
     // if the last play was X - append O, else append X -&&- update cell values
-    cell.append(h1);
     if (playItem) {
       h1.append('0');
       allCellValues[parseInt(cell.id)] = 1;
@@ -43,6 +42,7 @@ function appendPlayItem(cell) {
       allCellValues[parseInt(cell.id)] = -1;
     }
 
+    cell.append(h1);
     // set up playItem for the next play
     playItem = !playItem;
     totalPlayedItems++;
@@ -59,10 +59,10 @@ function checkForOutcomes(cell) {
   let row2 = allCellValues.slice(3, 6);
   let row3 = allCellValues.slice(6);
   let col1 = []
-    , col2 = []
-    , col3 = []
-    , diag1 = []
-    , diag2 = [];
+  , col2 = []
+  , col3 = []
+  , diag1 = []
+  , diag2 = [];
 
   col1.push(allCellValues[0], allCellValues[3], allCellValues[6]);
   col2.push(allCellValues[1], allCellValues[4], allCellValues[7]);
@@ -75,10 +75,12 @@ function checkForOutcomes(cell) {
     let result = outcome.reduce((a, b) => a + b, 0);
     if (result === -3) {
       alert('Winner !! Congrats player X ! B)');
+      playItem = false; // winner starts next round
       resetGameBoard();
       return true;
     } else if (result === 3) {
       alert('Winner !! Congrats player O ! B)');
+      playItem = true; // winner starts next round
       resetGameBoard();
       return true;
     }
@@ -115,17 +117,23 @@ function initializeGameBoard() {
   }
 }
 
-  // initialize game board and make the first play
-  const startGame = () => {
-    allCellValues = [0, 0, 0, 0, 0, 0, 0, 0, 0];
-    let rand = Math.floor(Math.random() * 9);
-    let firstPlay = document.createElement('h1');
-    // firstPlay.onclick = clickEventHandler.bind(this);
+// initialize game board and make the first play
+const startGame = () => {
+  allCellValues = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+  let rand = Math.floor(Math.random() * 9);
+  let firstPlay = document.createElement('h1');
+  if (playItem) {
+    firstPlay.append('0');
+    allCellValues[rand] = 1;
+  } else {
     firstPlay.append('X');
-    allCells[rand].append(firstPlay)
     allCellValues[rand] = -1;
-    totalPlayedItems = 1;
-  };
+  }
+  // firstPlay.append('X');
+  // allCellValues[rand] = -1;
+  allCells[rand].append(firstPlay)
+  totalPlayedItems = 1;
+};
 
 initializeGameBoard();
 startGame();
