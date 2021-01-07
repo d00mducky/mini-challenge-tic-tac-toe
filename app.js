@@ -1,5 +1,6 @@
 // selectors
 const gameBoard = document.getElementById('game-board');
+const resetBtn = document.getElementById('reset');
 const c1r1 = document.getElementById('0');
 const c2r1 = document.getElementById('1');
 const c3r1 = document.getElementById('2');
@@ -15,6 +16,7 @@ const c3r3 = document.getElementById('8');
 let playItem = true;
 let allCells = [c1r1, c2r1, c3r1, c1r2, c2r2, c3r2, c1r3, c2r3, c3r3];
 let allCellValues = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+let totalPlayedItems = 1;
 
 
 // helper functions
@@ -37,7 +39,10 @@ function appendPlayItem(cell) {
 
     // set up playItem for the next play
     playItem = !playItem;
-    console.log(allCellValues);
+    totalPlayedItems++;
+    if (totalPlayedItems === 9) {
+      alert('Woah!! What a close one - press Reset to play again!! B)')
+    }
   }
 }
 
@@ -63,74 +68,59 @@ function checkForOutcomes(cell) {
     let result = outcome.reduce((a, b) => a + b, 0);
     if (result === -3) {
       alert('Winner !! Congrats player X ! B)');
+      resetGameBoard();
       return true;
     } else if (result === 3) {
       alert('Winner !! Congrats player O ! B)');
+      resetGameBoard();
       return true;
     }
   });
-
-  function resetBoard() {
-
-  }
-  // allCellValues.forEach((cell) => {
-
-  // })
-
-
-  // let count = 0;
-  // let column1 = allCellValues.map((cell) => {
-  //   if (count < 3) {
-
-  //   }
-  //   count++
-  // })
-  // console.log(row1);
-
-
-
-
-
-
-
-
-
-  // let allPlays = [[],[],[]];
-  // let allPlay = [];
-  // let count = 0;
-  // for (cell of allCells) {
-  //   if (cell.children[0].innerHTML) {
-  //     if (cell.children[0].innerHTML == 'O') {
-  //       allplay[count] = 1;
-  //     } else {
-  //       allplay[count] = 2;
-  //     }
-  //   } else {
-  //     allplay[count] = 0;
-  //   }
-  //   console.log(cell.children[0].innerHTML);
-  //   console.log(cell.children.length);
-  // }
 }
 
-// initialize game board
-if (gameBoard != null) {
-  for(let i = 0; i < gameBoard.rows.length; i++) {
-    for (let j = 0; j < gameBoard.rows[i].cells.length; j++) {
-      gameBoard.rows[i].cells[j].onclick = function (event) {
-        appendPlayItem(this);
-        checkForOutcomes(this);
+function resetGameBoard() {
+  // for each cell in the table
+  allCells.forEach((cell) => {
+    // if cell has a child
+    if (cell.children.length) {
+      // reset the cell
+      cell.innerHTML = '';
+    }
+  });
+
+  // set the gameboard back up for play
+  startGame();
+}
+
+function initializeGameBoard() {
+  if (gameBoard != null) {
+    for(let i = 0; i < gameBoard.rows.length; i++) {
+      for (let j = 0; j < gameBoard.rows[i].cells.length; j++) {
+        gameBoard.rows[i].cells[j].onclick = function (event) {
+          appendPlayItem(this);
+          checkForOutcomes(this);
+        }
       }
+    }
+  }
+
+  if (resetBtn != null) {
+    resetBtn.onclick = function (event) {
+      resetGameBoard();
     }
   }
 }
 
-// make the first play
-(() => {
+// initialize game board and make the first play
+const startGame = () => {
   let rand = Math.floor(Math.random() * 9);
   let firstPlay = document.createElement('h1');
   firstPlay.append('X');
   allCells[rand].append(firstPlay)
   allCellValues[rand] = -1;
-})();
+
+};
+
+initializeGameBoard();
+startGame();
 
