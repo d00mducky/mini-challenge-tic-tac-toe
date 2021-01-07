@@ -18,6 +18,10 @@ let allCells = [c1r1, c2r1, c3r1, c1r2, c2r2, c3r2, c1r3, c2r3, c3r3];
 let allCellValues = [0, 0, 0, 0, 0, 0, 0, 0, 0];
 let totalPlayedItems = 1;
 
+function clickEventHandler(event) {
+  appendPlayItem(event.target);
+  checkForOutcomes(event.target);
+}
 
 // helper functions
 function appendPlayItem(cell) {
@@ -88,6 +92,8 @@ function resetGameBoard() {
     }
   });
 
+  allCellValues = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+
   // set the gameboard back up for play
   startGame();
 }
@@ -96,10 +102,12 @@ function initializeGameBoard() {
   if (gameBoard != null) {
     for(let i = 0; i < gameBoard.rows.length; i++) {
       for (let j = 0; j < gameBoard.rows[i].cells.length; j++) {
-        gameBoard.rows[i].cells[j].onclick = function (event) {
-          appendPlayItem(this);
-          checkForOutcomes(this);
-        }
+        gameBoard.rows[i].cells[j].onclick = clickEventHandler.bind(this);
+        // gameBoard.rows[i].cells[j].onclick = function (event) {
+        //   console.log(this);
+        //   appendPlayItem(this);
+        //   checkForOutcomes(this);
+        // }
       }
     }
   }
