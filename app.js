@@ -27,11 +27,12 @@ function clickEventHandler(event) {
 
 function appendPlayItem(cell) {
   // if the given cell already has an appended item
-  if (cell.children.length) {
+  if (cell.children.length || cell.innerText.length) {
     // tell user to select a different square or restart
     alert('This square has already been played! Please select an empty square or restart the game ! :)')
   } else { // the user selected an unplayed square
     let h1 = document.createElement('h1');
+    // h1.onclick = clickEventHandler.bind(this);
     // if the last play was X - append O, else append X -&&- update cell values
     cell.append(h1);
     if (playItem) {
@@ -119,6 +120,7 @@ function initializeGameBoard() {
     allCellValues = [0, 0, 0, 0, 0, 0, 0, 0, 0];
     let rand = Math.floor(Math.random() * 9);
     let firstPlay = document.createElement('h1');
+    // firstPlay.onclick = clickEventHandler.bind(this);
     firstPlay.append('X');
     allCells[rand].append(firstPlay)
     allCellValues[rand] = -1;
