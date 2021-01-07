@@ -1,8 +1,8 @@
 // selectors
 const gameBoard = document.getElementById('game-board');
 const resetBtn = document.getElementById('reset');
-const xWins = document.getElementById('x-wins');
-const oWins = document.getElementById('o-wins');
+const playerOneDisplay = document.getElementById('x-wins');
+const playerTwoDisplay = document.getElementById('o-wins');
 const c1r1 = document.getElementById('0');
 const c2r1 = document.getElementById('1');
 const c3r1 = document.getElementById('2');
@@ -16,8 +16,10 @@ const c3r3 = document.getElementById('8');
 
 // global variables
 let playItem = false; // X = false, O = true
-let numWins_X = 0;
-let numWins_O = 0;
+let playerOneName = '';
+let playerTwoName = '';
+let playerOneWins = 0;
+let playerTwoWins = 0;
 let allCells = [c1r1, c2r1, c3r1, c1r2, c2r2, c3r2, c1r3, c2r3, c3r3];
 let allCellValues = [];
 let totalPlayedItems = 0;
@@ -81,18 +83,18 @@ function checkForOutcomes(cell) {
   outcomes.some((outcome) => {
     let result = outcome.reduce((a, b) => a + b, 0);
     if (result === -3) {
-      alert('Winner !! Congrats player X ! B)');
+      alert('Winner !! Congrats ' + playerOneName + ' ! B)');
       playItem = false; // winner starts next round
-      numWins_X++;
+      playerOneWins++;
       resetGameBoard();
-      xWins.innerHTML = 'Player X Win Total: ' + numWins_X;
+      playerOneDisplay.innerHTML = playerOneName + ' Win Total: ' + playerOneWins;
       return true;
     } else if (result === 3) {
-      alert('Winner !! Congrats player O ! B)');
+      alert('Winner !! Congrats ' + playerTwoName + ' ! B)');
       playItem = true; // winner starts next round
-      numWins_O++;
+      playerTwoWins++;
       resetGameBoard();
-      oWins.innerHTML = 'Player O Win Total: ' + numWins_O;
+      playerTwoDisplay.innerHTML = playerTwoName + ' Win Total: ' + playerTwoWins;
       return true;
     }
   });
@@ -130,6 +132,13 @@ function initializeGameBoard() {
 
 // initialize game board and make the first play
 const startGame = () => {
+
+  playerOneName = prompt(`What is player one's (CPU) name?`);
+  playerTwoName = prompt(`What is player two's name?`);
+
+  playerOneDisplay.innerHTML = playerOneName + `'s Win Total: ` + playerOneWins;
+  playerTwoDisplay.innerHTML = playerTwoName + `'s Win Total: ` + playerTwoWins;
+
   allCellValues = [0, 0, 0, 0, 0, 0, 0, 0, 0];
   let rand = Math.floor(Math.random() * 9);
   let firstPlay = document.createElement('h1');
